@@ -1,15 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿//-----------------------------------------------------------------------
+// <copyright file="LayerMakeForm.cs" company="Goldsmith Engineering">
+//     Copyright (c) Goldsmith Engineering. All rights reserved.
+// </copyright>
+// <author>Winston Goldsmith</author>
+//-----------------------------------------------------------------------
 
 namespace LayerMakeTestForm
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Drawing;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Windows.Forms;
+
     public partial class LayerMakeForm : Form
     {
         public LayerMakeForm()
@@ -100,8 +107,26 @@ namespace LayerMakeTestForm
             }
 
             // search layersListBox to see if there is already an identical one.
+            if (Unique())
+            {
+                layersListBox.Items.Add(layer);
+            }
+        }
 
-            layersListBox.Items.Add(layer);
+        private bool Unique()
+        {
+            bool isUnique = true;
+
+            for (int w = 0; w < layersListBox.Items.Count; w++ )
+            {
+                if (layersListBox.Items[w].Equals(layerTextBox.Text))
+                {
+                    isUnique = false;
+                    break;
+                }
+            }
+
+            return isUnique;
         }
 
         private void layersListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -162,7 +187,7 @@ namespace LayerMakeTestForm
 
         private void colorButton_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void ltypeButton_Click(object sender, EventArgs e)

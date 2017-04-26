@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0BEDE687-D7A3-4B1D-AC5B-09FD41B2F410}</ProjectGuid>
+    <ProjectGuid>{37EBA2A7-31F1-4E25-8543-E2E3B4E49526}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LayerMakeTestForm</RootNamespace>
-    <AssemblyName>LayerMakeTestForm</AssemblyName>
+    <RootNamespace>MoreTextWindow</RootNamespace>
+    <AssemblyName>MoreTextWindow</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -45,16 +45,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LayerMakeForm.cs">
+    <Compile Include="MoreForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LayerMakeForm.Designer.cs">
-      <DependentUpon>LayerMakeForm.cs</DependentUpon>
+    <Compile Include="MoreForm.Designer.cs">
+      <DependentUpon>MoreForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="LayerMakeForm.resx">
-      <DependentUpon>LayerMakeForm.cs</DependentUpon>
+    <EmbeddedResource Include="MoreForm.resx">
+      <DependentUpon>MoreForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

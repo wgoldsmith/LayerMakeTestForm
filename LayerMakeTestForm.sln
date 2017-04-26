@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LayerMakeTestForm", "LayerM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LayerMakeTestTest", "LayerMakeTestTest\LayerMakeTestTest.csproj", "{21D384D8-79A6-4E58-BB7A-8A18F02DFE72}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreTextWindow", "MoreTextWindow\MoreTextWindow.csproj", "{37EBA2A7-31F1-4E25-8543-E2E3B4E49526}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{21D384D8-79A6-4E58-BB7A-8A18F02DFE72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21D384D8-79A6-4E58-BB7A-8A18F02DFE72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21D384D8-79A6-4E58-BB7A-8A18F02DFE72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37EBA2A7-31F1-4E25-8543-E2E3B4E49526}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37EBA2A7-31F1-4E25-8543-E2E3B4E49526}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37EBA2A7-31F1-4E25-8543-E2E3B4E49526}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37EBA2A7-31F1-4E25-8543-E2E3B4E49526}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
