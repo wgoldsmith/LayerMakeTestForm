@@ -16,9 +16,12 @@ namespace LayerMakeTestForm
     using System.Text;
     using System.Threading.Tasks;
     using System.Windows.Forms;
+    using MoreTextWindow;
 
     public partial class LayerMakeForm : Form
     {
+        private MoreForm textForm;
+
         public LayerMakeForm()
         {
             InitializeComponent();
@@ -193,6 +196,23 @@ namespace LayerMakeTestForm
         private void ltypeButton_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void moreCatButton_Click(object sender, EventArgs e)
+        {
+            textForm = new MoreForm(this.categoryListBox);
+            textForm.Show();
+        }
+        
+        private void moreEntButton_Click(object sender, EventArgs e)
+        {
+            textForm = new MoreForm(this.entityDescListBox);
+            textForm.Show();
+        }
+
+        private void textForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Console.WriteLine("yup");
         }
     }
 }

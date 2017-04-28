@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.listBox1 = new System.Windows.Forms.ListBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.okButton = new System.Windows.Forms.Button();
+            this.cancelButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listBox1
@@ -43,34 +43,39 @@
             this.listBox1.Size = new System.Drawing.Size(409, 394);
             this.listBox1.TabIndex = 0;
             // 
-            // button1
+            // okButton
             // 
-            this.button1.Location = new System.Drawing.Point(72, 426);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.okButton.Location = new System.Drawing.Point(123, 426);
+            this.okButton.Name = "okButton";
+            this.okButton.Size = new System.Drawing.Size(75, 23);
+            this.okButton.TabIndex = 1;
+            this.okButton.Text = "OK";
+            this.okButton.UseVisualStyleBackColor = true;
+            this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
-            // button2
+            // cancelButton
             // 
-            this.button2.Location = new System.Drawing.Point(258, 425);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
+            this.cancelButton.Location = new System.Drawing.Point(235, 426);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.TabIndex = 2;
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
-            // Form1
+            // MoreForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(434, 461);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.cancelButton);
+            this.Controls.Add(this.okButton);
             this.Controls.Add(this.listBox1);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "MoreForm";
+            this.Text = "More";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MoreForm_FormClosed);
             this.ResumeLayout(false);
 
         }
@@ -78,8 +83,8 @@
         #endregion
 
         private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button okButton;
+        private System.Windows.Forms.Button cancelButton;
     }
 }
 

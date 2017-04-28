@@ -78,6 +78,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MoreTextWindow\MoreTextWindow.csproj">
+      <Project>{37EBA2A7-31F1-4E25-8543-E2E3B4E49526}</Project>
+      <Name>MoreTextWindow</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

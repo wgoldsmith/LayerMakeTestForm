@@ -112,6 +112,7 @@
             this.moreCatButton.TabIndex = 3;
             this.moreCatButton.Text = "More...";
             this.moreCatButton.UseVisualStyleBackColor = true;
+            this.moreCatButton.Click += new System.EventHandler(this.moreCatButton_Click);
             // 
             // dataStateLabel
             // 
@@ -175,6 +176,7 @@
             this.moreEntButton.TabIndex = 9;
             this.moreEntButton.Text = "More...";
             this.moreEntButton.UseVisualStyleBackColor = true;
+            this.moreEntButton.Click += new System.EventHandler(this.moreEntButton_Click);
             // 
             // entityDescListBox
             // 
