@@ -75,7 +75,6 @@
             this.Controls.Add(this.listBox1);
             this.Name = "MoreForm";
             this.Text = "More";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MoreForm_FormClosed);
             this.ResumeLayout(false);
 
         }
