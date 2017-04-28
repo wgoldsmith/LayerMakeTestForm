@@ -34,17 +34,28 @@ namespace LayerMakeTestForm
 
         private void dataStateListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            addZs();
             layerTextBox.Text = dataStateListBox.SelectedItem.ToString().Split('\t')[0] + "-" + layerTextBox.Text.Substring(2);
         }
 
         private void categoryListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            addZs();
             layerTextBox.Text = layerTextBox.Text.Substring(0, 2) + categoryListBox.SelectedItem.ToString().Split('\t')[0] + "-" + layerTextBox.Text.Substring(5);
         }
 
         private void entityTypeListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            addZs();
             layerTextBox.Text = layerTextBox.Text.Substring(0, 5) + entityTypeListBox.SelectedItem.ToString().Split('\t')[0] + "-" + layerTextBox.Text.Substring(7);
+        }
+
+        private void addZs()
+        {
+            while (layerTextBox.Text.Length < 17)
+            {
+                layerTextBox.Text += "Z";
+            }
         }
 
         private void entityDescListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -63,6 +74,8 @@ namespace LayerMakeTestForm
             {
                 ent += "Z";
             }
+
+            addZs();
 
             if (radioButton1.Checked)
             {
@@ -97,25 +110,24 @@ namespace LayerMakeTestForm
             // checked length.
             // if less than 10, add Zs
             // if more, cut off at 10
-            string layer = layerTextBox.Text;
 
-            while (layer.Length < 17)
-            {
-                layer += "Z";
-            }
+            addZs();
+            layerTextBox.Text = layerTextBox.Text.ToUpper(); // make all text in textbox upper case
 
-            if (layer.Length > 17)
+            if (layerTextBox.Text.Length > 17)
             {
-                layer = layerTextBox.Text.Substring(0, 17);
+                layerTextBox.Text = layerTextBox.Text.Substring(0, 17);
             }
 
             // search layersListBox to see if there is already an identical one.
             if (Unique())
             {
-                layersListBox.Items.Add(layer);
+                layersListBox.Items.Add(layerTextBox.Text);
             }
         }
 
+        // checks that the text in layer textBox is different from
+        // all the items in layersListBox
         private bool Unique()
         {
             bool isUnique = true;
