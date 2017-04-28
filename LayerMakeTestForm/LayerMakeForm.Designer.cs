@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LayerMakeForm));
             this.dataStateListBox = new System.Windows.Forms.ListBox();
             this.categoryListBox = new System.Windows.Forms.ListBox();
             this.moreCatButton = new System.Windows.Forms.Button();
@@ -775,6 +776,7 @@
             this.Controls.Add(this.moreCatButton);
             this.Controls.Add(this.categoryListBox);
             this.Controls.Add(this.dataStateListBox);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "LayerMakeForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Layer Make";
