@@ -16,48 +16,209 @@ namespace LayerMakeTestForm
     using System.Text;
     using System.Threading.Tasks;
     using System.Windows.Forms;
+    using System.Xml;
     using MoreTextWindow;
 
+    /// <summary>
+    /// Initializes form that allows the user to create new layers in AutoCAD
+    /// </summary>
     public partial class LayerMakeForm : Form
     {
+        /// <summary>
+        /// The path to the location of the xml file with the segments of layer names
+        /// </summary>
+        private string path = @"C:\Users\wgoldsmith\Documents\Visual Studio 2015\Projects\LayerMakeTestForm\LayerMakeTestForm\layermake.xml";
+
+        /// <summary>
+        /// A child form that is used to show ListBoxes in a larger window
+        /// </summary>
         private MoreForm textForm;
 
+        /// <summary>
+        /// 2 character segment to be put in the Data State spot in the layer text box
+        /// </summary>
+        private string dataStateSeg;
+
+        /// <summary>
+        /// 3 character segment to be put in the Category spot in the layer text box
+        /// </summary>
+        private string categorySeg;
+
+        /// <summary>
+        /// 3 character segment to be put in the Entity Type spot in the layer text box
+        /// </summary>
+        private string entityTypeSeg;
+
+        /// <summary>
+        /// 3 character segment to be put as the beginning of the Entity Description spot in the layer text box
+        /// </summary>
+        private string entityDescSeg1;
+
+        /// <summary>
+        /// 3 character segment to be put as the middle of the Entity Description spot in the layer text box
+        /// </summary>
+        private string entityDescSeg2;
+
+        /// <summary>
+        /// 4 character segment to be put as the end of the Entity Description spot in the layer text box
+        /// </summary>
+        private string entityDescSeg3;
+
+        /// <summary>
+        /// Initializes a new instance of the LayerMakeForm class. Auto generated constructor for LayerMakeForm
+        /// </summary>
         public LayerMakeForm()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
-        private void cancelButton_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Reads layermake.xml and adds all the seg elements into the 4 list boxes
+        /// </summary>
+        private void ReadXML()
         {
-            this.Close();
-        }
-
-        private void dataStateListBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            addZs();
-            layerTextBox.Text = dataStateListBox.SelectedItem.ToString().Split('\t')[0] + "-" + layerTextBox.Text.Substring(2);
-        }
-
-        private void categoryListBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            addZs();
-            layerTextBox.Text = layerTextBox.Text.Substring(0, 2) + categoryListBox.SelectedItem.ToString().Split('\t')[0] + "-" + layerTextBox.Text.Substring(5);
-        }
-
-        private void entityTypeListBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            addZs();
-            layerTextBox.Text = layerTextBox.Text.Substring(0, 5) + entityTypeListBox.SelectedItem.ToString().Split('\t')[0] + "-" + layerTextBox.Text.Substring(7);
-        }
-
-        private void addZs()
-        {
-            while (layerTextBox.Text.Length < 17)
+            using (XmlReader reader = XmlReader.Create(path))
             {
-                layerTextBox.Text += "Z";
+                while (reader.Read())
+                {
+                    // if Node Type is...
+                    switch (reader.NodeType)
+                    {
+                        // ...Element type
+                        case XmlNodeType.Element:
+
+                            if (reader.Name.Equals("dsseg"))
+                            {
+                                this.dataStateListBox.Items.Add(reader.ReadElementContentAsString());
+                            }
+                            else if (reader.Name.Equals("cseg"))
+                            {
+                                this.categoryListBox.Items.Add(reader.ReadElementContentAsString());
+                            }
+                            else if (reader.Name.Equals("etseg"))
+                            {
+                                this.entityTypeListBox.Items.Add(reader.ReadElementContentAsString());
+                            }
+                            else if (reader.Name.Equals("edseg"))
+                            {
+                                this.entityDescListBox.Items.Add(reader.ReadElementContentAsString());
+                            }
+
+                            break;
+                    }
+                }
             }
         }
 
+        /// <summary>
+        /// Calls all segment update methods
+        /// </summary>
+        private void updateAllSegs()
+        {
+            this.updateDataSeg();
+            this.updateCatSeg();
+            this.updateEntTypeSeg();
+            this.updateEntDescSeg();
+        }
+
+        /// <summary>
+        /// Fills out the layer text box with all the individual segments
+        /// </summary>
+        private void updateTextBox()
+        {
+            this.layerTextBox.Text = this.dataStateSeg + this.categorySeg + this.entityTypeSeg + this.entityDescSeg1 + this.entityDescSeg2 + this.entityDescSeg3;
+        }
+
+        /// <summary>
+        /// Sets dataStateSeg to be the first 2 characters in the layer text box
+        /// </summary>
+        private void updateDataSeg()
+        {
+            this.dataStateSeg = this.layerTextBox.Text.Substring(2);
+        }
+
+        /// <summary>
+        /// Sets categorySeg to be the 3 characters starting at the 3rd character(index 2) in the layer text box
+        /// </summary>
+        private void updateCatSeg()
+        {
+            this.categorySeg = this.layerTextBox.Text.Substring(2, 3);
+        }
+
+        /// <summary>
+        /// Sets entityTypeSeg to be the 3 characters starting at the 6th character(index 5) in the layer text box
+        /// </summary>
+        private void updateEntTypeSeg()
+        {
+            this.entityTypeSeg = this.layerTextBox.Text.Substring(5, 2);
+        }
+
+        /// <summary>
+        /// Sets entityDescSeg1 to be the 3 characters starting at the 8th character(index 7) in the layer text box
+        /// Sets entityDescSeg2 to be the 3 characters starting at the 11th character(index 10) in the layer text box
+        /// Sets entityDescSeg3 to be the 4 characters starting at the 14th character(index 13) in the layer text box
+        /// </summary>
+        private void updateEntDescSeg()
+        {
+            this.entityDescSeg1 = this.layerTextBox.Text.Substring(7, 3);
+            this.entityDescSeg2 = this.layerTextBox.Text.Substring(10, 3);
+            this.entityDescSeg3 = this.layerTextBox.Text.Substring(13, 4);
+        }
+
+        /// <summary>
+        /// When the selected item in dataStateListBox is changed, 
+        /// change the Data State segment of the layer name (before the first '-')
+        /// </summary>
+        /// <param name="sender">Auto generated sender object by Visual Studio.</param>
+        /// <param name="e">Auto generated EventArgs by Visual Studio.</param>
+        private void dataStateListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.addZs();
+            this.layerTextBox.Text = this.dataStateListBox.SelectedItem.ToString().Split('\t')[0] + "-" + this.layerTextBox.Text.Substring(2);
+        }
+
+        /// <summary>
+        /// When the selected item in categoryListBox is changed, 
+        /// change the Category segment of the layer name (between the first '-' and second '-')
+        /// </summary>
+        /// <param name="sender">Auto generated sender object by Visual Studio.</param>
+        /// <param name="e">Auto generated EventArgs by Visual Studio.</param>
+        private void categoryListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.addZs();
+            this.layerTextBox.Text = this.layerTextBox.Text.Substring(0, 2) + this.categoryListBox.SelectedItem.ToString().Split('\t')[0] + "-" + this.layerTextBox.Text.Substring(5);
+        }
+
+        /// <summary>
+        /// When the selected item in entityTypeListBox is changed, 
+        /// change the Entity Type segment of the layer name (between the second '-' and third '-')
+        /// </summary>
+        /// <param name="sender">Auto generated sender object by Visual Studio.</param>
+        /// <param name="e">Auto generated EventArgs by Visual Studio.</param>
+        private void entityTypeListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.addZs();
+            this.layerTextBox.Text = this.layerTextBox.Text.Substring(0, 5) + this.entityTypeListBox.SelectedItem.ToString().Split('\t')[0] + "-" + this.layerTextBox.Text.Substring(7);
+        }
+
+        /// <summary>
+        /// Adds trailing Zs if the length is less than 17 characters long
+        /// </summary>
+        private void addZs()
+        {
+            while (this.layerTextBox.Text.Length < 17)
+            {
+                this.layerTextBox.Text += "Z";
+            }
+        }
+
+        /// <summary>
+        /// When the selected item in entityDescListBox is changed, 
+        /// change the Entity Description segment of the layer name (after the last '-')
+// some more stuff        /// 
+        /// </summary>
+        /// <param name="sender">Auto generated sender object by Visual Studio.</param>
+        /// <param name="e">Auto generated EventArgs by Visual Studio.</param>
         private void entityDescListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             // check radio buttons
@@ -68,41 +229,58 @@ namespace LayerMakeTestForm
             //     else // button3 checked
             //         fill last 4 chars
 
-            string ent = entityDescListBox.SelectedItem.ToString().Split('\t')[0]; // get all characters before the tab in the selected item in the entity descriptor box
+            string ent = this.entityDescListBox.SelectedItem.ToString().Split('\t')[0]; // get all characters before the tab in the selected item in the entity descriptor box
             ent = ent.Trim(); // trim extra white space. just in case there were spaces before tab
             while (ent.Length < 4) // add trailing Zs to fill out each section of the entity descriptor
             {
                 ent += "Z";
             }
 
-            addZs();
+            this.addZs();
 
-            if (radioButton1.Checked)
+            if (this.radioButton1.Checked)
             {
                 //                                                       (to take off extra Z)
                 //                  first 7 characters in textBox     + first 3 chars of ent + starting at tenth char to the end of the string 
-                layerTextBox.Text = layerTextBox.Text.Substring(0, 7) + ent.Substring(0, 3) + layerTextBox.Text.Substring(10);
+                this.layerTextBox.Text = this.layerTextBox.Text.Substring(0, 7) + ent.Substring(0, 3) + this.layerTextBox.Text.Substring(10);
             } 
-            else if (radioButton2.Checked)
+            else if (this.radioButton2.Checked)
             {
                 //                                                       (to take off extra Z)
                 //                  first 10 characters in textBox     + first 3 chars of ent + starting at thirteenth char to the end of the string 
-                layerTextBox.Text = layerTextBox.Text.Substring(0, 10) + ent.Substring(0, 3) + layerTextBox.Text.Substring(13);
+                this.layerTextBox.Text = this.layerTextBox.Text.Substring(0, 10) + ent.Substring(0, 3) + this.layerTextBox.Text.Substring(13);
             }
             else // radioButton3.checked
             {
                 //                  first 13 characters in textBox     + ent
-                layerTextBox.Text = layerTextBox.Text.Substring(0, 13) + ent;
+                this.layerTextBox.Text = this.layerTextBox.Text.Substring(0, 13) + ent;
             }
         }
 
         private void LayerMakeForm_Load(object sender, EventArgs e)
         {
-            dataStateListBox.SelectedIndex = 0;
-            categoryListBox.SelectedIndex = 0;
-            entityTypeListBox.SelectedIndex = 0;
-            entityDescListBox.SelectedIndex = 0;
-            layerTextBox.Text = layerTextBox.Text.Substring(0, 7) + "ZZZZZZZZZZ";
+            // clear out preset values in list boxes
+            this.dataStateListBox.Items.Clear();
+            this.categoryListBox.Items.Clear();
+            this.entityTypeListBox.Items.Clear();
+            this.entityDescListBox.Items.Clear();
+
+            // read in all the layer name segments to be put in the list boxes from an xml file
+            this.ReadXML();
+
+            if (this.dataStateListBox.Items.Count > 0)
+                this.dataStateListBox.SelectedIndex = 0;
+
+            if(this.categoryListBox.Items.Count > 0)
+                this.categoryListBox.SelectedIndex = 0;
+
+            if(this.entityTypeListBox.Items.Count > 0)
+                this.entityTypeListBox.SelectedIndex = 0;
+
+            if (this.entityDescListBox.Items.Count > 0)
+                this.entityDescListBox.SelectedIndex = 0;
+
+            this.layerTextBox.Text = this.layerTextBox.Text.Substring(0, 7) + "ZZZZZZZZZZ";
         }
 
         private void makeButton_Click(object sender, EventArgs e)
@@ -111,19 +289,21 @@ namespace LayerMakeTestForm
             // if less than 10, add Zs
             // if more, cut off at 10
 
-            addZs();
-            layerTextBox.Text = layerTextBox.Text.ToUpper(); // make all text in textbox upper case
+            this.addZs();
+            this.layerTextBox.Text = this.layerTextBox.Text.ToUpper(); // make all text in textbox upper case
 
-            if (layerTextBox.Text.Length > 17)
+            if (this.layerTextBox.Text.Length > 17)
             {
-                layerTextBox.Text = layerTextBox.Text.Substring(0, 17);
+                this.layerTextBox.Text = this.layerTextBox.Text.Substring(0, 17);
             }
 
             // search layersListBox to see if there is already an identical one.
-            if (Unique())
+            if (this.Unique())
             {
-                layersListBox.Items.Add(layerTextBox.Text);
+                this.layersListBox.Items.Add(this.layerTextBox.Text);
             }
+
+//////////// Make new layer with given name, as long as there isn't one already
         }
 
         // checks that the text in layer textBox is different from
@@ -132,9 +312,9 @@ namespace LayerMakeTestForm
         {
             bool isUnique = true;
 
-            for (int w = 0; w < layersListBox.Items.Count; w++ )
+            for (int w = 0; w < this.layersListBox.Items.Count; w++ )
             {
-                if (layersListBox.Items[w].Equals(layerTextBox.Text))
+                if (this.layersListBox.Items[w].Equals(this.layerTextBox.Text))
                 {
                     isUnique = false;
                     break;
@@ -146,85 +326,121 @@ namespace LayerMakeTestForm
 
         private void layersListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (layersListBox.SelectedIndex >= 0) // checks if something is actually selected. if not, index will be -1
+            if (this.layersListBox.SelectedIndex >= 0) // checks if something is actually selected. if not, index will be -1
             {
-                enableButtons();
+                this.enableButtons();
             }
         }
 
+        /// <summary>
+        /// Allows Delete, Color, and LType buttons to be clicked
+        /// </summary>
         private void enableButtons()
         {
-            if (!deleteButton.Enabled)
+            if (!this.deleteButton.Enabled)
             {
-                deleteButton.Enabled = true;
+                this.deleteButton.Enabled = true;
             }
-            if (!colorButton.Enabled)
+            if (!this.colorButton.Enabled)
             {
-                colorButton.Enabled = true;
+                this.colorButton.Enabled = true;
             }
-            if (!ltypeButton.Enabled)
+            if (!this.ltypeButton.Enabled)
             {
-                ltypeButton.Enabled = true;
+                this.ltypeButton.Enabled = true;
             }
         }
 
+        /// <summary>
+        /// Disables Delete, Color, and LType buttons from being clicked
+        /// </summary>
         private void disableButtons()
         {
-            if (deleteButton.Enabled)
+            if (this.deleteButton.Enabled)
             {
-                deleteButton.Enabled = false;
+                this.deleteButton.Enabled = false;
             }
-            if (colorButton.Enabled)
+            if (this.colorButton.Enabled)
             {
-                colorButton.Enabled = false;
+                this.colorButton.Enabled = false;
             }
-            if (ltypeButton.Enabled)
+            if (this.ltypeButton.Enabled)
             {
-                ltypeButton.Enabled = false;
+                this.ltypeButton.Enabled = false;
             }
         }
 
+        /// <summary>
+        /// When user clicks delete button, delete selected layer in layersListBox
+        /// and from autoCAD drawing
+        /// </summary>
+        /// <param name="sender">Auto generated sender object by Visual Studio.</param>
+        /// <param name="e">Auto generated EventArgs by Visual Studio.</param>
         private void deleteButton_Click(object sender, EventArgs e)
         {
             // get current index so that, when the selected item is deleted, the item that takes its place will be selected.
-            int index = layersListBox.SelectedIndex;
-            layersListBox.Items.RemoveAt(layersListBox.SelectedIndex);
+            int index = this.layersListBox.SelectedIndex;
+            this.layersListBox.Items.RemoveAt(this.layersListBox.SelectedIndex);
 
-            if (index < layersListBox.Items.Count) // if the deleted item was not the last in the list, select item that replaces deleted item
+            if (index < this.layersListBox.Items.Count) // if the deleted item was not the last in the list, select item that replaces deleted item
             {
-                layersListBox.SelectedIndex = index;
+                this.layersListBox.SelectedIndex = index;
             }
             else // deleted item was last in the list
             {
-                disableButtons(); // don't select anything and disable buttons
+                this.disableButtons(); // don't select anything and disable buttons
             }
+
+//////////// Delete layer
         }
 
         private void colorButton_Click(object sender, EventArgs e)
         {
-
+//////////// Open layer color editor
         }
 
         private void ltypeButton_Click(object sender, EventArgs e)
         {
-
+//////////// Open layer line type editor
         }
 
         private void moreCatButton_Click(object sender, EventArgs e)
         {
-            textForm = new MoreForm(this.categoryListBox);
-            textForm.Show();
-        }
-        
-        private void moreEntButton_Click(object sender, EventArgs e)
-        {
-            textForm = new MoreForm(this.entityDescListBox);
-            textForm.Show();
+            this.textForm = new MoreForm(this.categoryListBox);
+            this.textForm.ShowDialog(this); // disables LayerMakeForm while MoreForm is active
         }
 
-        private void textForm_FormClosed(object sender, FormClosedEventArgs e)
+        private void moreEntButton_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("yup");
+            this.textForm = new MoreForm(this.entityDescListBox);
+            this.textForm.ShowDialog(this); // disables LayerMakeForm while MoreForm is active
+        }
+
+        private void layerTextBox_Leave(object sender, EventArgs e)
+        {
+            this.addZs();
+            this.updateAllSegs();
+        }
+
+        /// <summary>
+        /// When user clicks cancel button, delete all made layers, and close form.
+        /// </summary>
+        /// <param name="sender">Auto generated sender object by Visual Studio.</param>
+        /// <param name="e">Auto generated EventArgs by Visual Studio.</param>
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+//////////// Delete all made layers from AutoCAD drawing
+            this.Close();
+        }
+
+        /// <summary>
+        /// When user clicks ok button, close form without deleting layers.
+        /// </summary>
+        /// <param name="sender">Auto generated sender object by Visual Studio.</param>
+        /// <param name="e">Auto generated EventArgs by Visual Studio.</param>
+        private void okButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

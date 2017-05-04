@@ -651,6 +651,7 @@
             this.layerTextBox.Size = new System.Drawing.Size(342, 20);
             this.layerTextBox.TabIndex = 15;
             this.layerTextBox.Text = "A-AM-D-ZZZZZZZZZZ";
+            this.layerTextBox.Leave += new System.EventHandler(this.layerTextBox_Leave);
             // 
             // ltypeButton
             // 
@@ -703,6 +704,7 @@
             this.okButton.TabIndex = 0;
             this.okButton.Text = "OK";
             this.okButton.UseVisualStyleBackColor = true;
+            this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
             // cancelButton
             // 
