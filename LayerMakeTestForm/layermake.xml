@@ -1,4 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!--When adding new segments, the tag and description must be seperated by a TAB-->
+<!--Like: A As-built-->
+<!--    TAB^     it looks small, but it is a tab-->
 <namesegments>
   <datastate>
     <dsseg>A	As-built</dsseg>

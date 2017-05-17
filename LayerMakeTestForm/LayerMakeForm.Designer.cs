@@ -650,7 +650,7 @@
             this.layerTextBox.Name = "layerTextBox";
             this.layerTextBox.Size = new System.Drawing.Size(342, 20);
             this.layerTextBox.TabIndex = 15;
-            this.layerTextBox.Text = "A-AM-D-ZZZZZZZZZZ";
+            this.layerTextBox.Text = "F-AM-D-ZZZZZZZZZZ";
             this.layerTextBox.Leave += new System.EventHandler(this.layerTextBox_Leave);
             // 
             // ltypeButton

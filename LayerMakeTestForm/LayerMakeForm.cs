@@ -27,7 +27,7 @@ namespace LayerMakeTestForm
         /// <summary>
         /// The path to the location of the xml file with the segments of layer names
         /// </summary>
-        private string path = @"C:\Users\wgoldsmith\Documents\Visual Studio 2015\Projects\LayerMakeTestForm\LayerMakeTestForm\layermake.xml";
+        private string path; ////= @"C:\Users\wgoldsmith\Documents\Visual Studio 2015\Projects\LayerMakeTestForm\LayerMakeTestForm\layermake.xml";
 
         /// <summary>
         /// A child form that is used to show ListBoxes in a larger window
@@ -67,8 +67,9 @@ namespace LayerMakeTestForm
         /// <summary>
         /// Initializes a new instance of the LayerMakeForm class. Auto generated constructor for LayerMakeForm
         /// </summary>
-        public LayerMakeForm()
+        public LayerMakeForm(string p)
         {
+            this.path = @p; // @ makes the string literal so that slashes in path will not be escaped
             this.InitializeComponent();
         }
 
@@ -77,14 +78,14 @@ namespace LayerMakeTestForm
         /// </summary>
         private void ReadXML()
         {
-            using (XmlReader reader = XmlReader.Create(path))
+            using (XmlReader reader = XmlReader.Create(this.path))
             {
                 while (reader.Read())
                 {
                     // if Node Type is...
                     switch (reader.NodeType)
                     {
-                        // ...Element type
+                        // ...equal to type Element
                         case XmlNodeType.Element:
 
                             if (reader.Name.Equals("dsseg"))
@@ -134,7 +135,7 @@ namespace LayerMakeTestForm
         /// </summary>
         private void updateDataSeg()
         {
-            this.dataStateSeg = this.layerTextBox.Text.Substring(2);
+            this.dataStateSeg = this.layerTextBox.Text.Substring(0,2);
         }
 
         /// <summary>
@@ -174,7 +175,10 @@ namespace LayerMakeTestForm
         private void dataStateListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.addZs();
-            this.layerTextBox.Text = this.dataStateListBox.SelectedItem.ToString().Split('\t')[0] + "-" + this.layerTextBox.Text.Substring(2);
+            //// this.layerTextBox.Text = this.dataStateListBox.SelectedItem.ToString().Split('\t')[0] + "-" + this.layerTextBox.Text.Substring(2);
+
+            this.dataStateSeg = this.dataStateListBox.SelectedItem.ToString().Split('\t')[0] + "-"; // gets the segment of text before the tab in the selected item
+            this.updateTextBox();
         }
 
         /// <summary>
@@ -186,7 +190,10 @@ namespace LayerMakeTestForm
         private void categoryListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.addZs();
-            this.layerTextBox.Text = this.layerTextBox.Text.Substring(0, 2) + this.categoryListBox.SelectedItem.ToString().Split('\t')[0] + "-" + this.layerTextBox.Text.Substring(5);
+            //// this.layerTextBox.Text = this.layerTextBox.Text.Substring(0, 2) + this.categoryListBox.SelectedItem.ToString().Split('\t')[0] + "-" + this.layerTextBox.Text.Substring(5);
+
+            this.categorySeg = this.categoryListBox.SelectedItem.ToString().Split('\t')[0] + "-"; // gets the segment of text before the tab in the selected item
+            this.updateTextBox();
         }
 
         /// <summary>
@@ -198,7 +205,10 @@ namespace LayerMakeTestForm
         private void entityTypeListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.addZs();
-            this.layerTextBox.Text = this.layerTextBox.Text.Substring(0, 5) + this.entityTypeListBox.SelectedItem.ToString().Split('\t')[0] + "-" + this.layerTextBox.Text.Substring(7);
+            //// this.layerTextBox.Text = this.layerTextBox.Text.Substring(0, 5) + this.entityTypeListBox.SelectedItem.ToString().Split('\t')[0] + "-" + this.layerTextBox.Text.Substring(7);
+
+            this.entityTypeSeg = this.entityTypeListBox.SelectedItem.ToString().Split('\t')[0] + "-"; // gets the segment of text before the tab in the selected item
+            this.updateTextBox();
         }
 
         /// <summary>
@@ -228,10 +238,11 @@ namespace LayerMakeTestForm
             //         fill 2nd 3 chars
             //     else // button3 checked
             //         fill last 4 chars
-
             string ent = this.entityDescListBox.SelectedItem.ToString().Split('\t')[0]; // get all characters before the tab in the selected item in the entity descriptor box
             ent = ent.Trim(); // trim extra white space. just in case there were spaces before tab
-            while (ent.Length < 4) // add trailing Zs to fill out each section of the entity descriptor
+
+            // add trailing Zs to fill out each section of the entity descriptor
+            while (ent.Length < 4) 
             {
                 ent += "Z";
             }
@@ -240,23 +251,36 @@ namespace LayerMakeTestForm
 
             if (this.radioButton1.Checked)
             {
-                //                                                       (to take off extra Z)
-                //                  first 7 characters in textBox     + first 3 chars of ent + starting at tenth char to the end of the string 
-                this.layerTextBox.Text = this.layerTextBox.Text.Substring(0, 7) + ent.Substring(0, 3) + this.layerTextBox.Text.Substring(10);
+                ////                                                     (to take off extra Z)
+                ////                         first 7 characters in textBox     + first 3 chars of ent + starting at tenth char to the end of the string 
+                ////this.layerTextBox.Text = this.layerTextBox.Text.Substring(0, 7) + ent.Substring(0, 3) + this.layerTextBox.Text.Substring(10);
+                
+                this.entityDescSeg1 = ent.Substring(0, 3);
             } 
             else if (this.radioButton2.Checked)
             {
-                //                                                       (to take off extra Z)
-                //                  first 10 characters in textBox     + first 3 chars of ent + starting at thirteenth char to the end of the string 
-                this.layerTextBox.Text = this.layerTextBox.Text.Substring(0, 10) + ent.Substring(0, 3) + this.layerTextBox.Text.Substring(13);
+                ////                                                       (to take off extra Z)
+                ////                         first 10 characters in textBox     + first 3 chars of ent + starting at thirteenth char to the end of the string 
+                ////this.layerTextBox.Text = this.layerTextBox.Text.Substring(0, 10) + ent.Substring(0, 3) + this.layerTextBox.Text.Substring(13);
+
+                this.entityDescSeg2 = ent.Substring(0, 3);
             }
-            else // radioButton3.checked
-            {
-                //                  first 13 characters in textBox     + ent
-                this.layerTextBox.Text = this.layerTextBox.Text.Substring(0, 13) + ent;
+            else
+            { // radioButton3.checked
+                ////                          first 13 characters in textBox     + ent
+                ////this.layerTextBox.Text = this.layerTextBox.Text.Substring(0, 13) + ent;
+
+                this.entityDescSeg3 = ent;
             }
+
+            this.updateTextBox();
         }
 
+        /// <summary>
+        /// When the form is loaded, fill list boxes and the layer name text box
+        /// </summary>
+        /// <param name="sender">Auto generated sender object by Visual Studio.</param>
+        /// <param name="e">Auto generated EventArgs by Visual Studio.</param>
         private void LayerMakeForm_Load(object sender, EventArgs e)
         {
             // clear out preset values in list boxes
@@ -265,32 +289,48 @@ namespace LayerMakeTestForm
             this.entityTypeListBox.Items.Clear();
             this.entityDescListBox.Items.Clear();
 
+            entityDescSeg2 = "ZZZ";
+            entityDescSeg3 = "ZZZZ";
+
             // read in all the layer name segments to be put in the list boxes from an xml file
             this.ReadXML();
 
+            // if the list boxes are not empty, select the first item
             if (this.dataStateListBox.Items.Count > 0)
+            {
                 this.dataStateListBox.SelectedIndex = 0;
+            }
 
-            if(this.categoryListBox.Items.Count > 0)
+            if (this.categoryListBox.Items.Count > 0)
+            {
                 this.categoryListBox.SelectedIndex = 0;
+            }
 
-            if(this.entityTypeListBox.Items.Count > 0)
+            if (this.entityTypeListBox.Items.Count > 0)
+            {
                 this.entityTypeListBox.SelectedIndex = 0;
+            }
 
             if (this.entityDescListBox.Items.Count > 0)
+            {
                 this.entityDescListBox.SelectedIndex = 0;
+            }
 
-            this.layerTextBox.Text = this.layerTextBox.Text.Substring(0, 7) + "ZZZZZZZZZZ";
+            ////this.layerTextBox.Text = this.layerTextBox.Text.Substring(0, 7) + "ZZZZZZZZZZ";
         }
 
+        /// <summary>
+        /// When user clicks Make button, add the contents of the layer name text box into the layersListBox and create it in AutoCAD
+        /// if it isn't already in layersListBox or AutoCAD
+        /// </summary>
+        /// <param name="sender">Auto generated sender object by Visual Studio.</param>
+        /// <param name="e">Auto generated EventArgs by Visual Studio.</param>
         private void makeButton_Click(object sender, EventArgs e)
         {
             // checked length.
             // if less than 10, add Zs
             // if more, cut off at 10
-
             this.addZs();
-            this.layerTextBox.Text = this.layerTextBox.Text.ToUpper(); // make all text in textbox upper case
 
             if (this.layerTextBox.Text.Length > 17)
             {
@@ -306,14 +346,19 @@ namespace LayerMakeTestForm
 //////////// Make new layer with given name, as long as there isn't one already
         }
 
-        // checks that the text in layer textBox is different from
-        // all the items in layersListBox
+        /// <summary>
+        /// checks that the text in layer textBox is different from all the items in layersListBox
+        /// </summary>
+        /// <returns>true if the text box text is not found in the list box. false if it is found</returns>
         private bool Unique()
         {
             bool isUnique = true;
 
-            for (int w = 0; w < this.layersListBox.Items.Count; w++ )
+            // loop through all items in layers list box
+            for (int w = 0; w < this.layersListBox.Items.Count; w++)
             {
+                // if current item in list box equals text in text box,
+                // set isUnique to false and break out of loop
                 if (this.layersListBox.Items[w].Equals(this.layerTextBox.Text))
                 {
                     isUnique = false;
@@ -324,9 +369,15 @@ namespace LayerMakeTestForm
             return isUnique;
         }
 
+        /// <summary>
+        /// When an item in layers list box is selected, enable delete, color, and ltype buttons
+        /// </summary>
+        /// <param name="sender">Auto generated sender object by Visual Studio.</param>
+        /// <param name="e">Auto generated EventArgs by Visual Studio.</param>
         private void layersListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (this.layersListBox.SelectedIndex >= 0) // checks if something is actually selected. if not, index will be -1
+            // checks if something is actually selected. if not, index will be -1
+            if (this.layersListBox.SelectedIndex >= 0) 
             {
                 this.enableButtons();
             }
@@ -341,10 +392,12 @@ namespace LayerMakeTestForm
             {
                 this.deleteButton.Enabled = true;
             }
+
             if (!this.colorButton.Enabled)
             {
                 this.colorButton.Enabled = true;
             }
+
             if (!this.ltypeButton.Enabled)
             {
                 this.ltypeButton.Enabled = true;
@@ -360,10 +413,12 @@ namespace LayerMakeTestForm
             {
                 this.deleteButton.Enabled = false;
             }
+
             if (this.colorButton.Enabled)
             {
                 this.colorButton.Enabled = false;
             }
+
             if (this.ltypeButton.Enabled)
             {
                 this.ltypeButton.Enabled = false;
@@ -382,43 +437,70 @@ namespace LayerMakeTestForm
             int index = this.layersListBox.SelectedIndex;
             this.layersListBox.Items.RemoveAt(this.layersListBox.SelectedIndex);
 
-            if (index < this.layersListBox.Items.Count) // if the deleted item was not the last in the list, select item that replaces deleted item
+            // if the deleted item was not the last in the list, select item that replaces deleted item
+            if (index < this.layersListBox.Items.Count) 
             {
                 this.layersListBox.SelectedIndex = index;
             }
-            else // deleted item was last in the list
-            {
+            else
+            { // deleted item was last in the list
                 this.disableButtons(); // don't select anything and disable buttons
             }
 
 //////////// Delete layer
         }
 
+        /// <summary>
+        /// When user clicks color button, open the AutoCAD layer color selector
+        /// </summary>
+        /// <param name="sender">Auto generated sender object by Visual Studio.</param>
+        /// <param name="e">Auto generated EventArgs by Visual Studio.</param>
         private void colorButton_Click(object sender, EventArgs e)
         {
 //////////// Open layer color editor
         }
 
+        /// <summary>
+        /// When user clicks L-Type button, open the AutoCAD line type selector
+        /// </summary>
+        /// <param name="sender">Auto generated sender object by Visual Studio.</param>
+        /// <param name="e">Auto generated EventArgs by Visual Studio.</param>
         private void ltypeButton_Click(object sender, EventArgs e)
         {
 //////////// Open layer line type editor
         }
 
+        /// <summary>
+        /// When user clicks More button above the category list box, open a new form to show the category options in a larger window
+        /// </summary>
+        /// <param name="sender">Auto generated sender object by Visual Studio.</param>
+        /// <param name="e">Auto generated EventArgs by Visual Studio.</param>
         private void moreCatButton_Click(object sender, EventArgs e)
         {
             this.textForm = new MoreForm(this.categoryListBox);
             this.textForm.ShowDialog(this); // disables LayerMakeForm while MoreForm is active
         }
 
+        /// <summary>
+        /// When user clicks More button above the entity descriptor list box, open a new form to show the entity descriptor options in a larger window
+        /// </summary>
+        /// <param name="sender">Auto generated sender object by Visual Studio.</param>
+        /// <param name="e">Auto generated EventArgs by Visual Studio.</param>
         private void moreEntButton_Click(object sender, EventArgs e)
         {
             this.textForm = new MoreForm(this.entityDescListBox);
             this.textForm.ShowDialog(this); // disables LayerMakeForm while MoreForm is active
         }
 
+        /// <summary>
+        /// When user focus leaves the layer text box, set values for layer name segments
+        /// </summary>
+        /// <param name="sender">Auto generated sender object by Visual Studio.</param>
+        /// <param name="e">Auto generated EventArgs by Visual Studio.</param>
         private void layerTextBox_Leave(object sender, EventArgs e)
         {
             this.addZs();
+            this.layerTextBox.Text = this.layerTextBox.Text.ToUpper(); // make all text in textbox upper case
             this.updateAllSegs();
         }
 
